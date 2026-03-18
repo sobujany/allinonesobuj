@@ -10,30 +10,37 @@
 
 <header>
 <h1>My Blog</h1>
-<p>Latest Articles & Tutorials</p>
+<p>Latest Posts from Blogger</p>
 </header>
 
-<section class="cards">
+<section id="blogPosts" class="container"></section>
 
-<div class="card">
-<h3>How to Earn Money Online</h3>
-<p>Learn simple ways to earn money online</p>
-<a href="post1.html">Read More</a>
-</div>
+<script>
+const feedUrl = "https://sobujany.blogspot.com/feeds/posts/default?alt=json";
 
-<div class="card">
-<h3>AI দিয়ে টাকা আয়</h3>
-<p>Artificial Intelligence দিয়ে income করার উপায়</p>
-<a href="post2.html">Read More</a>
-</div>
+fetch(feedUrl)
+.then(response => response.json())
+.then(data => {
+  let posts = data.feed.entry;
+  let container = document.getElementById("blogPosts");
 
-<div class="card">
-<h3>Blogging Tutorial</h3>
-<p>কিভাবে ব্লগিং শুরু করবেন</p>
-<a href="post3.html">Read More</a>
-</div>
+  posts.slice(0,6).forEach(post => {
 
-</section>
+    let title = post.title.$t;
+    let link = post.link.find(l => l.rel === "alternate").href;
+
+    let div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <h3>${title}</h3>
+      <a href="${link}" target="_blank">Read More</a>
+    `;
+
+    container.appendChild(div);
+  });
+});
+</script>
 
 </body>
 </html>
