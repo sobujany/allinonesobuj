@@ -1,46 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Blog - Sultan Mahamud</title>
-<link rel="stylesheet" href="style.css">
-</head>
+<section style="padding:20px">
+<h2>Latest Blogger Posts</h2>
 
-<body>
+<div id="blogger-posts"></div>
 
-<header>
-<h1>My Blog</h1>
-<p>Latest Posts from Blogger</p>
-</header>
-
-<section id="blogPosts" class="container"></section>
+</section>
 
 <script>
-const feedUrl = "https://sobujany.blogspot.com/feeds/posts/default?alt=json";
-
-fetch(feedUrl)
-.then(response => response.json())
+fetch("https://sobujany.blogspot.com/feeds/posts/default?alt=json")
+.then(res => res.json())
 .then(data => {
-  let posts = data.feed.entry;
-  let container = document.getElementById("blogPosts");
 
-  posts.slice(0,6).forEach(post => {
+  let posts = data.feed.entry;
+  let container = document.getElementById("blogger-posts");
+
+  posts.slice(0,5).forEach(post => {
 
     let title = post.title.$t;
     let link = post.link.find(l => l.rel === "alternate").href;
 
     let div = document.createElement("div");
-    div.className = "card";
-
     div.innerHTML = `
       <h3>${title}</h3>
       <a href="${link}" target="_blank">Read More</a>
+      <hr>
     `;
 
     container.appendChild(div);
   });
+
 });
 </script>
-
-</body>
-</html>
